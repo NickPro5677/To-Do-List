@@ -33,14 +33,20 @@ function createTaskElement(text, completed) {
   const li = document.createElement('li');
   li.className = `task ${completed ? 'completed' : ''}`;
 
-  li.innerHTML = `
-    <input type="checkbox" ${completed ? 'checked' : ''}>
-    <label>${text}</label>
-    <button class="delete-btn">×</button>
-  `;
+  // Se crean los nodos a mano y el texto va por textContent,
+  // así lo que escribe el usuario nunca se interpreta como HTML.
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.checked = completed;
 
-  const checkbox = li.querySelector('input');
-  const deleteBtn = li.querySelector('.delete-btn');
+  const label = document.createElement('label');
+  label.textContent = text;
+
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'delete-btn';
+  deleteBtn.textContent = '×';
+
+  li.append(checkbox, label, deleteBtn);
 
   checkbox.addEventListener('change', () => {
     li.classList.toggle('completed');
